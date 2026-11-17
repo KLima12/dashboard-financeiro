@@ -1,6 +1,6 @@
 interface SummaryCardProps { 
-    titulo: string, 
-    valor: number,
+    titulo: string;
+    valor: string;
     tipo?: "saldo" | "receita" | "despesa";
 }
 
