@@ -2,48 +2,84 @@ import { api } from "../../api/api";
 
 export type TransactionType = "receitas" | "despesas";
 
-export interface Ifinanceiro { 
-    id: number;
-    categoria: string;
-    descricao: string | null;
-    valor: string;
-    tipo: TransactionType; 
-    data: string;
-    created_at: string; 
-    updated_at: string;
+export interface Ifinanceiro {
+  id: number;
+  categoria: string;
+  descricao: string | null;
+  valor: string;
+  tipo: TransactionType;
+  data: string;
+  created_at: string;
+  updated_at: string;
 }
 
-export const TransacoesApi = { 
-    async getTransacoes() { 
-        try { 
-            const response = await api.get("/financeiro/get-transacoes/");
+export const TransacoesApi = {
+  async getTransacoes() {
+    try {
+      const response = await api.get("/financeiro/get-transacoes/");
 
-            return response.data as Ifinanceiro[];
-        } catch(e) { 
-            console.error("Erro ao buscar histórico de transações do usuário.")
-        }
-    },
-
-    async editTransacao(
-        id: number, 
-        tipo: string, 
-        valor: string, 
-        categoria: string, 
-        descricao: string, 
-        data: string) { 
-        try { 
-            const response = await api.put(`/financeiro/edit-transacao/${id}`, { 
-                tipo: tipo, 
-                valor: valor, 
-                categoria: categoria, 
-                descricao: descricao, 
-                data: data
-            })
-
-            return response.data;
-        } catch(error) { 
-            console.log("Erro ao editar transacao: ", error);
-            alert("Houve um erro ao editar sua transação. Tente novamente.");
-        }
+      return response.data as Ifinanceiro[];
+    } catch (e) {
+      console.error("Erro ao buscar histórico de transações do usuário.");
     }
-}
+  },
+  async createTransacao(
+    tipo: string,
+    valor: string,
+    categoria: string,
+    data: string,
+    descricao?: string,
+  ) {
+    try {
+      const response = await api.post(`/financeiro/create-transacao/`, {
+        tipo: tipo,
+        valor: valor,
+        categoria: categoria,
+        data: data,
+        descricao: descricao,
+      });
+
+      if (response) {
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Houve um erro ao criar transação: ", error);
+    }
+  },
+
+  async editTransacao(
+    id: number,
+    tipo: string,
+    valor: string,
+    categoria: string,
+    data: string,
+    descricao?: string,
+  ) {
+    try {
+      const response = await api.put(`/financeiro/edit-transacao/${id}`, {
+        tipo: tipo,
+        valor: valor,
+        categoria: categoria,
+        descricao: descricao,
+        data: data,
+      });
+
+      return response.data;
+    } catch (error) {
+      console.log("Erro ao editar transacao: ", error);
+      alert("Houve um erro ao editar sua transação. Tente novamente.");
+    }
+  },
+
+  async deleteTransacao(id: number) {
+    try {
+      const response = await api.delete(`/financeiro/delete-transacao/${id}`);
+
+      if (response) {
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Houve um erro ao deletar transação: ", error);
+    }
+  },
+};

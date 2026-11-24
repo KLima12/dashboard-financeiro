@@ -27,9 +27,6 @@ export function BarraFixa(){
             <span>Saldo: {formatarMoeda(dados?.saldo)}</span>
             <span>Receitas: {formatarMoeda(dados?.receitas)}</span>
             <span>Despesas: {formatarMoeda(dados?.despesas)}</span>
-            <p>teste</p>
-             
-            
         </header>
     )
 }
